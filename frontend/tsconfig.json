@@ -5,6 +5,8 @@
     { "path": "./tsconfig.node.json" }
   ],
    "compilerOptions": {
+    "emitDeclarationOnly": true,
+    "declaration": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
