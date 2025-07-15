@@ -13,13 +13,14 @@ import { Label } from "@/components/ui/label"
 import api from '@/api/api'
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Terminal } from "lucide-react"
+import { RegisterNewUser, TypeTextAlert } from "@/enums/GenericData"
 
 const Register = () => {
     const [userName, setUserName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const [alertErro, setAlertErro] = useState<boolean>(false);
-    const [alertSuccess, setAlertSuccess] = useState<boolean>(false);
+    const [alert, setAlert] = useState<boolean>(false);
+    const [typeAlert, setTypeAlert] = useState<string>('');
     const [alertMsg, setAlertMsg] = useState<string>('');
 
     const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -28,9 +29,10 @@ const Register = () => {
         if (email && email.length >= 3 && email.includes("@")) {
             const { data } = await api.get(`/users?email=${email}`)
             if (data && data.length) {
-                setAlertErro(true)
-                setAlertMsg(`Usário já encontrado com este Email`)
-                time("0")
+                setAlert(true)
+                setTypeAlert(TypeTextAlert.FAILED)
+                setAlertMsg(RegisterNewUser.EMAIL_EXISTS_USER)
+                timer()
             } else if (password && password.length >= 3) {
                 await api.post('/users', {
                     username: userName,
@@ -38,26 +40,18 @@ const Register = () => {
                     password: password
                 })
 
-                setAlertSuccess(true)
-                setAlertMsg(`Usuário Cadastrado!`)
-                time("1")
+                setAlert(true)
+                setTypeAlert(TypeTextAlert.FAILED)
+                setAlertMsg(RegisterNewUser.NEW_SUCCESS_USER)
+                timer()
             }
         }
     }
 
-    const time = (operation: string) => {
-        switch (operation) {
-            case "0":
-                setTimeout(() => {
-                    setAlertErro(false);
-                }, 3000)
-                break;
-            case "1":
-                setTimeout(() => {
-                    setAlertSuccess(false);
-                }, 3000)
-                break;
-        }
+    const timer = () => {
+        setTimeout(() => {
+            setAlert(false);
+        }, 3000)
     }
 
     return (
@@ -115,21 +109,10 @@ const Register = () => {
             </Card>
             <div className="w-full flex items-center justify-center absolute bottom-5">
                 {
-                    alertErro ? (
-                        <Alert className="w-1/4" variant="destructive">
+                    alert ? (
+                        <Alert className="max-w-2/12" variant={typeAlert == TypeTextAlert.FAILED ? 'destructive' : typeAlert == TypeTextAlert.SUCCESS ? 'default' : 'default'} >
                             <Terminal />
-                            <AlertTitle>Erro</AlertTitle>
-                            <AlertDescription>
-                                {alertMsg}
-                            </AlertDescription>
-                        </Alert>
-                    ) : null
-                }
-                {
-                    alertSuccess ? (
-                        <Alert className="w-1/4" variant="default">
-                            <Terminal />
-                            <AlertTitle>Sucesso!</AlertTitle>
+                            <AlertTitle>{typeAlert}</AlertTitle>
                             <AlertDescription>
                                 {alertMsg}
                             </AlertDescription>

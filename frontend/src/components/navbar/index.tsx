@@ -6,12 +6,24 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import { clearStorage } from '@/storage';
+import Divider from '@mui/material/Divider';
+import MenuList from '@mui/material/MenuList';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemText from '@mui/material/ListItemText';
+import { useNavigate } from 'react-router-dom';
+import { FaHome } from "react-icons/fa";
+import { FaTasks } from "react-icons/fa";
+import useMediaQuery from '@mui/material/useMediaQuery';
 
-const NavBard = () => {
+
+const NavBar = () => {
+    const isMobile = useMediaQuery('(min-width:1000px)');
+    const navigate = useNavigate();
+
     return (
-        <Box sx={{ flexGrow: 1 }}>
-            <div className='bg-primary'>
-                <AppBar position="static" color='transparent'>
+        <div className='w-full flex flex-col z-50'>
+            <Box sx={{ flexGrow: 1, width: '100%' }}>
+                <AppBar color='transparent' className='bg-red-500' style={{ height: '60px', zIndex: '30', position: 'fixed', width: '100%', backgroundColor: '#1a1a1a', boxShadow: 'none' }}>
                     <Toolbar>
                         <IconButton
                             size="large"
@@ -26,13 +38,34 @@ const NavBard = () => {
                         </Typography>
                         <Button style={{ color: 'white' }} onClick={() => {
                             clearStorage();
-                            window.location.href = '/'
+                            navigate('/')
                         }}>Logout</Button>
                     </Toolbar>
                 </AppBar>
-            </div>
-        </Box>
+            </Box>
+            <Box sx={{ flexGrow: 1, height: '100vh', backgroundColor: 'transparent', position: 'fixed', marginTop: '60px' }}>
+                <div className='bg-sidebar-primary h-screen'>
+                    <MenuList sx={{ width: '100%', flexGrow: 1 }}>
+                        <Divider />
+                        <MenuItem onClick={() => {
+                            navigate('/dashboard')
+                        }} className='flex flex-row gap-2 items-center'>
+                            <FaHome size={20} color='white' />
+                            {isMobile ? (<ListItemText className='text-white text-3xl w-full' >Dashboard</ListItemText>) : null}
+                        </MenuItem>
+                        <Divider />
+                        <MenuItem onClick={() => {
+                            navigate('/tasks')
+                        }} className='flex flex-row gap-2 items-center'>
+                            <FaTasks size={20} color='white' />
+                            {isMobile ? (<ListItemText className='text-white w-full' >Tarefas</ListItemText>) : null}
+                        </MenuItem>
+                        <Divider />
+                    </MenuList>
+                </div>
+            </Box>
+        </div>
     );
 }
 
-export default NavBard;
+export default NavBar;

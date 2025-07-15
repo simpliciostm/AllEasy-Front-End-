@@ -12,5 +12,34 @@
       "email": "thiago@email.com",
       "password": "senha"
     }
+  ],
+  "tasks": [
+    {
+      "id": "12",
+      "refUser": "a5fd",
+      "title": "Teste",
+      "description": "descrição",
+      "category": "pessoal",
+      "priority": "Média",
+      "status": "Em Progresso"
+    },
+    {
+      "title": "fazer compra do mês",
+      "description": "ir ao mercado para fazer a compra do mês",
+      "category": "pessoal",
+      "priority": "Alta",
+      "status": "Pendente",
+      "id": "a2d6",
+      "refUser": "a5fd"
+    },
+    {
+      "id": "a0a3",
+      "refUser": "a5fd",
+      "title": "",
+      "description": "",
+      "category": "",
+      "priority": "",
+      "status": ""
+    }
   ]
 }

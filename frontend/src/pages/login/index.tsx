@@ -15,6 +15,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Terminal } from "lucide-react"
 import { setLocalStorage } from "@/storage"
 import { useNavigate } from "react-router-dom"
+import { LoginActivities, TypeTextAlert } from "@/enums/GenericData"
 
 interface IUser {
   id: string,
@@ -26,8 +27,8 @@ interface IUser {
 const Login = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [alertErro, setAlertErro] = useState<boolean>(false);
-  const [alertSuccess, setAlertSuccess] = useState<boolean>(false);
+  const [alert, setAlert] = useState<boolean>(false);
+  const [typeAlert, setTypeAlert] = useState<string>('');
   const [alertMsg, setAlertMsg] = useState<string>('');
   const navigate = useNavigate();
 
@@ -38,49 +39,42 @@ const Login = () => {
     if (email && email.length >= 5 && email.includes("@")) {
       const { data } = await api.get(`/users?email=${email}`)
       if (data.length == 0) {
-        setAlertErro(true)
-        setAlertMsg(`Usário não encotrado com esse Email`)
-        time('0')
+        setAlert(true)
+        setTypeAlert(TypeTextAlert.FAILED)
+        setAlertMsg(LoginActivities.EMAIL_NOT_FOUND)
+        timer()
       } else if (password && password.length >= 1) {
         const { data } = await api.get(`/users?email=${email}&password=${password}`)
         if (data.length == 0) {
-          setAlertErro(true)
-          setAlertMsg(`Senha não confere com esse Email`)
-          time('0')
+          setAlert(true)
+          setTypeAlert(TypeTextAlert.FAILED)
+          setAlertMsg(LoginActivities.PASSWORD_NOT_USER)
+          timer()
         } else {
           const user: IUser = data[0];
           setLocalStorage('id', user.id);
           setLocalStorage('auth', 'autenticado');
-          setAlertSuccess(true)
-          setAlertMsg(`Usuário Logado!`)
-          time('1')
+          setAlert(true)
+          setTypeAlert(TypeTextAlert.SUCCESS)
+          setAlertMsg(LoginActivities.SUCCESS)
+          timer()
         }
       }
     }
   }
 
-  const time = (operation: string) => {
-    switch (operation) {
-      case "0":
-        setTimeout(() => {
-          setAlertErro(false);
-        }, 3000)
-        break;
-      case "1":
-        setTimeout(() => {
-          setAlertSuccess(false);
-          navigate('/dashboard')
-        }, 3000)
-        break;
-    }
+  const timer = () => {
+    setTimeout(() => {
+      setAlert(false);
+    }, 5000)
   }
 
   return (
     <div className="w-full h-screen flex items-center justify-center">
       <Card className="w-full max-w-sm border-0">
         <CardHeader>
-          <CardTitle >Tela de Acesso</CardTitle>
-          <CardDescription >
+          <CardTitle className="text-white" >Tela de Acesso</CardTitle>
+          <CardDescription className="text-white" >
             Coloque as informações de usuário para fazer seu Login
           </CardDescription>
         </CardHeader>
@@ -88,8 +82,9 @@ const Login = () => {
           <form>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
+                <Label className="text-white" htmlFor="email">Email</Label>
                 <Input
+                  className="text-white"
                   id="email"
                   type="email"
                   placeholder="m@example.com"
@@ -99,18 +94,18 @@ const Login = () => {
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
+                  <Label className="text-white" htmlFor="password">Password</Label>
                 </div>
-                <Input id="password" type="password" required onChange={(e) => setPassword(e.target.value)} />
+                <Input className="text-white" id="password" type="password" required onChange={(e) => setPassword(e.target.value)} />
               </div>
             </div>
           </form>
         </CardContent>
         <CardFooter className="flex-col gap-2">
-          <Button onClick={handleSubmit} type="submit" className="w-full bg-white text-primary hover:text-white">
+          <Button onClick={handleSubmit} type="submit" className="w-full bg-sidebar-accent text-white cursor-pointer hover:text-white">
             Entrar
           </Button>
-          <Button variant="outline" className="w-full text-white" onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+          <Button variant="outline" className="w-full bg-amber-50 text-primary cursor-pointer hover:text-primary" onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
             e.preventDefault()
             navigate('/register')
           }}>
@@ -120,21 +115,10 @@ const Login = () => {
       </Card>
       <div className="w-full flex items-center justify-center absolute bottom-5">
         {
-          alertErro ? (
-            <Alert className="w-1/4" variant="destructive" >
+          alert ? (
+            <Alert className="max-w-2/12" variant={typeAlert == TypeTextAlert.FAILED ? 'destructive' : typeAlert == TypeTextAlert.SUCCESS ? 'default' : 'default'} >
               <Terminal />
-              <AlertTitle>Erro</AlertTitle>
-              <AlertDescription>
-                {alertMsg}
-              </AlertDescription>
-            </Alert>
-          ) : null
-        }
-        {
-          alertSuccess ? (
-            <Alert className="w-1/4" variant="default">
-              <Terminal />
-              <AlertTitle>Sucesso!</AlertTitle>
+              <AlertTitle>{typeAlert}</AlertTitle>
               <AlertDescription>
                 {alertMsg}
               </AlertDescription>
