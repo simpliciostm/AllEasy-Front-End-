@@ -1,10 +1,16 @@
 {
-    "users": [
-        {
-            "id": 0,
-            "username": "thiago",
-            "email": "email@email.com",
-            "password": "senha"
-        }
-    ]
+  "users": [
+    {
+      "id": "0",
+      "username": "thiago",
+      "email": "email@email.com",
+      "password": "senha"
+    },
+    {
+      "id": "a5fd",
+      "username": "thiago",
+      "email": "thiago@email.com",
+      "password": "senha"
+    }
+  ]
 }
