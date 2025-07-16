@@ -40,7 +40,7 @@ const TasksComponent = (props: ITaskComponent) => {
 
     return (
         <div className="flex flex-col gap-3">
-            <Card className="flex flex-col p-6 rounded-2xl gap-4 w-80 bg-card">
+            <Card className="max-w-80 flex flex-col p-6 rounded-2xl gap-4 bg-card">
                 <div className="w-full flex flex-col gap-2">
                     <Label className="text-white" htmlFor="title">Título</Label>
                     <Input placeholder={props.title} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)} className=" text-white placeholder:text-white" />
@@ -50,14 +50,30 @@ const TasksComponent = (props: ITaskComponent) => {
                     <Textarea placeholder={props.description} className="max-h-7 text-white placeholder:text-white" name="description" value={description} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)} />
                 </div>
                 <div className="flex flex-row flex-wrap gap-4">
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-2 w-full">
                         <Label className="text-white" htmlFor="category">Categoria</Label>
-                        <Input placeholder={props.category} className="text-white placeholder:text-white" name="category" value={category} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCategory(e.target.value)} />
+                        <Select value={category && category != props.category ? category : props.category} onValueChange={(value: string) => setCategory(value)}>
+                            <SelectTrigger className="w-full text-white">
+                                <SelectValue placeholder="Selecione uma opçao" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    <SelectLabel>Selecione</SelectLabel>
+                                    <SelectItem value="Pessoal">Pessoal</SelectItem>
+                                    <SelectItem value="Trabalho">Trabalho</SelectItem>
+                                    <SelectItem value="Estudo">Estudo</SelectItem>
+                                    <SelectItem value="Finanças">Finanças</SelectItem>
+                                    <SelectItem value="Tarefas domésticas">Tarefas Domésticas</SelectItem>
+                                    <SelectItem value="Viagem">Viagem</SelectItem>
+                                    <SelectItem value="Outros">Outros</SelectItem>
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
                     </div>
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-2 w-full">
                         <Label className="text-white" htmlFor="priority">Prioridade</Label>
                         <Select value={priority && priority != props.priority ? priority : props.priority} onValueChange={(value: string) => setPriority(value)}>
-                            <SelectTrigger className="w-[180px] text-white">
+                            <SelectTrigger className="w-full text-white">
                                 <SelectValue placeholder="Selecione uma opçao" />
                             </SelectTrigger>
                             <SelectContent>

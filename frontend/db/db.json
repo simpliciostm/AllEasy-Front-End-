@@ -15,31 +15,31 @@
   ],
   "tasks": [
     {
-      "id": "12",
-      "refUser": "a5fd",
-      "title": "Teste",
-      "description": "descrição",
-      "category": "pessoal",
-      "priority": "Média",
-      "status": "Em Progresso"
-    },
-    {
       "title": "fazer compra do mês",
       "description": "ir ao mercado para fazer a compra do mês",
-      "category": "pessoal",
+      "category": "Pessoal",
       "priority": "Alta",
-      "status": "Pendente",
+      "status": "Concluído",
       "id": "a2d6",
       "refUser": "a5fd"
     },
     {
+      "title": "novo",
+      "description": "novo card",
+      "category": "Trabalho",
+      "priority": "Alta",
+      "status": "Em Progresso",
       "id": "a0a3",
-      "refUser": "a5fd",
+      "refUser": "a5fd"
+    },
+    {
       "title": "",
       "description": "",
-      "category": "",
+      "category": "Estudo",
       "priority": "",
-      "status": ""
+      "status": "Em Progresso",
+      "id": "3c14",
+      "refUser": "a5fd"
     }
   ]
 }

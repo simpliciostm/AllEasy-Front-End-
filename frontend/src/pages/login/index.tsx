@@ -35,37 +35,46 @@ const Login = () => {
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-
-    if (email && email.length >= 5 && email.includes("@")) {
-      const { data } = await api.get(`/users?email=${email}`)
-      if (data.length == 0) {
-        setAlert(true)
-        setTypeAlert(TypeTextAlert.FAILED)
-        setAlertMsg(LoginActivities.EMAIL_NOT_FOUND)
-        timer()
-      } else if (password && password.length >= 1) {
-        const { data } = await api.get(`/users?email=${email}&password=${password}`)
+    try {
+      if (email && email.length >= 5 && email.includes("@")) {
+        const { data } = await api.get(`/users?email=${email}`)
         if (data.length == 0) {
           setAlert(true)
           setTypeAlert(TypeTextAlert.FAILED)
-          setAlertMsg(LoginActivities.PASSWORD_NOT_USER)
-          timer()
-        } else {
-          const user: IUser = data[0];
-          setLocalStorage('id', user.id);
-          setLocalStorage('auth', 'autenticado');
-          setAlert(true)
-          setTypeAlert(TypeTextAlert.SUCCESS)
-          setAlertMsg(LoginActivities.SUCCESS)
-          timer()
+          setAlertMsg(LoginActivities.EMAIL_NOT_FOUND)
+          timer(false)
+        } else if (password && password.length >= 1) {
+          const { data } = await api.get(`/users?email=${email}&password=${password}`)
+          if (data.length == 0) {
+            setAlert(true)
+            setTypeAlert(TypeTextAlert.FAILED)
+            setAlertMsg(LoginActivities.PASSWORD_NOT_USER)
+            timer(false)
+          } else {
+            const user: IUser = data[0];
+            setLocalStorage('id', user.id);
+            setLocalStorage('auth', 'autenticado');
+            setAlert(true)
+            setTypeAlert(TypeTextAlert.SUCCESS)
+            setAlertMsg(LoginActivities.SUCCESS)
+            timer(true)
+          }
         }
       }
+    } catch (err: unknown) {
+      if (typeof err == 'string')
+        setAlertMsg(err)
+      setAlert(true)
+      setTypeAlert(TypeTextAlert.FAILED)
+      timer(false)
     }
+
   }
 
-  const timer = () => {
+  const timer = (to: boolean) => {
     setTimeout(() => {
       setAlert(false);
+      if (to) navigate('/dashboard')
     }, 5000)
   }
 
