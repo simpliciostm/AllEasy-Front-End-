@@ -60,17 +60,17 @@ const NavBar = () => {
                     <MenuList sx={{ width: '100%', flexGrow: 1 }}>
                         <Divider />
                         <MenuItem onClick={() => {
+                            navigate('/tarefas')
+                        }} className='flex flex-row gap-2 items-center'>
+                            <FaTasks size={20} color='white' />
+                            {isMobile ? (<ListItemText className='text-white w-full' >Tarefas</ListItemText>) : null}
+                        </MenuItem>
+                        <Divider />
+                        <MenuItem onClick={() => {
                             navigate('/dashboard')
                         }} className='flex flex-row gap-2 items-center'>
                             <FaHome size={20} color='white' />
                             {isMobile ? (<ListItemText className='text-white text-3xl w-full' >Dashboard</ListItemText>) : null}
-                        </MenuItem>
-                        <Divider />
-                        <MenuItem onClick={() => {
-                            navigate('/tasks')
-                        }} className='flex flex-row gap-2 items-center'>
-                            <FaTasks size={20} color='white' />
-                            {isMobile ? (<ListItemText className='text-white w-full' >Tarefas</ListItemText>) : null}
                         </MenuItem>
                         <Divider />
                     </MenuList>

@@ -9,9 +9,9 @@ const RouterApp = () => {
     return (
         <Routes>
             <Route path="/" element={<Login />} />
-            <Route path="/register" element={<PrivateRoute><Register /></PrivateRoute>} />
+            <Route path="/cadastro" element={<PrivateRoute><Register /></PrivateRoute>} />
             <Route path="/dashboard" element={<PrivateRoute><DashBoard /></PrivateRoute>} />
-            <Route path="/tasks" element={<PrivateRoute><Tasks /></PrivateRoute>} />
+            <Route path="/tarefas" element={<PrivateRoute><Tasks /></PrivateRoute>} />
         </Routes>
     );
 };
