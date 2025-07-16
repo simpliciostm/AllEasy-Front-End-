@@ -13,7 +13,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [typeAlert, setTypeAlert] = useState<string>('');
     const [alertMsg, setAlertMsg] = useState<string>('');
     const [username, setUserName] = useState<string>('');
-    const [userAuth, setUserAuth] = useState<boolean>(false);
+    const [userAuth, setUserAuth] = useState<string>('');
     const navigate = useNavigate();
 
     const timer = useCallback((to: boolean) => {
@@ -99,14 +99,14 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     navigate('/')
                     clearStorage()
                 } else {
-                    setUserAuth(true)
+                    setUserAuth(ETypeAuthenticate.AUTH)
                 }
             }
         }
 
         getUserInfo()
         isUserAuth()
-    }, [getUserInfo, navigate])
+    }, [getUserInfo, navigate, userAuth])
 
     return (
         <AuthContext.Provider value={{ login, logout, username, userAuth }}>
