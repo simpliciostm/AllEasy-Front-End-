@@ -1,18 +1,13 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./pages/login";
-import Register from "./pages/register";
-import DashBoard from "./pages/dashboard";
-import Tasks from "./pages/tasks";
+import { BrowserRouter } from "react-router-dom";
+import RouterApp from "./routes/route";
+import AuthProvider from "./contexts/authProvider";
 
 const App = () => {
     return (
         <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/dashboard" element={<DashBoard />} />
-                <Route path="/tasks" element={<Tasks />} />
-            </Routes>
+            <AuthProvider>
+                <RouterApp />
+            </AuthProvider>
         </BrowserRouter>
     );
 };

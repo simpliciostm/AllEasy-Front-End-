@@ -34,3 +34,11 @@ export const enum ETypeCategory {
     TRIP = "Viagem",
     OTHERS = "Outros"
 }
+
+export const enum ETypeUser {
+    USER_NOT_FOUND = "Usuário não encontrado"
+}
+
+export const enum ETypeAuthenticate {
+    AUTH = "autenticado"
+}

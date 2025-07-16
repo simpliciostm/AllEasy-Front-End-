@@ -5,7 +5,6 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import { clearStorage } from '@/storage';
 import Divider from '@mui/material/Divider';
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
@@ -14,11 +13,15 @@ import { useNavigate } from 'react-router-dom';
 import { FaHome } from "react-icons/fa";
 import { FaTasks } from "react-icons/fa";
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { AuthContext } from '@/contexts/authContext';
+import { IoIosLogOut } from "react-icons/io";
 
 
 const NavBar = () => {
     const isMobile = useMediaQuery('(min-width:1000px)');
     const navigate = useNavigate();
+
+    const { logout, username } = React.useContext(AuthContext)
 
     return (
         <div className='w-full flex flex-col z-50'>
@@ -33,13 +36,22 @@ const NavBar = () => {
                             sx={{ mr: 2 }}
                         >
                         </IconButton>
-                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} className='text-white'>
+                        <Typography fontWeight={'bold'} variant="h6" component="div" sx={{ flexGrow: 1 }} className='text-white'>
                             AllEasy
                         </Typography>
-                        <Button style={{ color: 'white' }} onClick={() => {
-                            clearStorage();
-                            navigate('/')
-                        }}>Logout</Button>
+                        <div className='flex flex-row items-center gap-5'>
+                            <div className='flex flex-col'>
+                                <Typography fontSize={15} fontWeight={'bold'} component="span" sx={{ flexGrow: 1 }} className='text-white'>
+                                    Bem vindo,
+                                </Typography>
+                                <Typography fontSize={15} fontWeight={'bold'} component="span" sx={{ flexGrow: 1 }} className='text-white'>
+                                    {username}
+                                </Typography>
+                            </div>
+                            <Button style={{ color: 'white' }} onClick={() => {
+                                logout()
+                            }}><IoIosLogOut color='white' size={21} /></Button>
+                        </div>
                     </Toolbar>
                 </AppBar>
             </Box>

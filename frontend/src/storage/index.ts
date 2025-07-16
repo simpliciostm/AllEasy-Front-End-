@@ -5,3 +5,9 @@ export const setLocalStorage = (key: string, value: string) => {
 export const clearStorage = () => {
     window.localStorage.clear();
 }
+
+export const getStorage = (key: string) => {
+    const itemStorage = window.localStorage.getItem(key)
+
+    if (itemStorage && typeof itemStorage == 'string') return itemStorage
+}
