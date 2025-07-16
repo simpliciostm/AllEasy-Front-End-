@@ -19,7 +19,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const timer = useCallback((to: boolean) => {
         setTimeout(() => {
             setAlert(false);
-            if (to) navigate('/dashboard')
+            if (to) navigate('/tarefas')
         }, 5000);
     }, [navigate, setAlert]);
 
