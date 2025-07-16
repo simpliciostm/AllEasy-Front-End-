@@ -142,13 +142,13 @@ const Tasks = () => {
     }
 
     return (
-        <div className="w-full flex flex-row gap-10">
-            <div className='flex flex-row w-1/12'>
+        <div className="w-full flex flex-row gap-5">
+            <div className='flex flex-row'>
                 <NavBard />
             </div>
-            <div className="w-full h-screen mt-20 ml-30 flex flex-col gap-6 pr-4 overflow-auto">
+            <div className="w-full h-screen mt-20 flex flex-col gap-2 pr-4 overflow-auto">
                 <Typography variant="h5" className="text-white font-bold">Gerenciamento de Tarefas</Typography>
-                <form onSubmit={(e: React.SyntheticEvent<HTMLFormElement>) => applyFilterListTask(e)} className="w-full flex flex-row gap-7 p-4 rounded-2xl flex-wrap items-center">
+                <form onSubmit={(e: React.SyntheticEvent<HTMLFormElement>) => applyFilterListTask(e)} className="w-full flex flex-row gap-7 p-4 rounded-2xl flex-wrap items-center text-center">
                     <div className="flex flex-col items-start gap-2 flex-wrap">
                         <Label className="text-white" htmlFor="Titulo">Titulo</Label>
                         <Input className="text-white bg-sidebar-accent" value={title} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)} />
@@ -201,7 +201,7 @@ const Tasks = () => {
                             </SelectContent>
                         </Select>
                     </div>
-                    <div className="flex gap-3 flex-row-reverse items-center flex-wrap-reverse">
+                    <div className="flex gap-3 flex-row-reverse items-center justify-center text-center flex-wrap-reverse">
                         <Button onClick={(e) => handleAddNewTask(e)} className="bg-sidebar-accent text-white hover:text-white cursor-pointer mt-5">Adicionar Nova Tarefa</Button>
                         <Button className="bg-sidebar-accent text-white mt-5 cursor-pointer hover:text-white" type="submit">Filtrar</Button>
                         <Button className="bg-sidebar-accent text-white mt-5 cursor-pointer hover:text-white" type="button" onClick={(e: React.MouseEvent<HTMLButtonElement>) => clearFilterListTask(e)}>X</Button>

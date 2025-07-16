@@ -23,7 +23,7 @@ const NavBar = () => {
     return (
         <div className='w-full flex flex-col z-50'>
             <Box sx={{ flexGrow: 1, width: '100%' }}>
-                <AppBar color='transparent' className='bg-red-500' style={{ height: '60px', zIndex: '30', position: 'fixed', width: '100%', backgroundColor: '#1a1a1a', boxShadow: 'none' }}>
+                <AppBar color='transparent' style={{ height: '60px', zIndex: '30', position: 'fixed', width: '100%', backgroundColor: '#1a1a1a', boxShadow: 'none' }}>
                     <Toolbar>
                         <IconButton
                             size="large"
@@ -43,7 +43,7 @@ const NavBar = () => {
                     </Toolbar>
                 </AppBar>
             </Box>
-            <Box sx={{ flexGrow: 1, height: '100vh', backgroundColor: 'transparent', position: 'fixed', marginTop: '60px' }}>
+            <Box sx={{ flexGrow: 1, height: '100vh', backgroundColor: 'transparent', position: 'static', marginTop: '60px' }}>
                 <div className='bg-sidebar-primary h-screen'>
                     <MenuList sx={{ width: '100%', flexGrow: 1 }}>
                         <Divider />

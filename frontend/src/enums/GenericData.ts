@@ -18,3 +18,19 @@ export const enum RegisterNewUser {
     EMAIL_EXISTS_USER = "Usário já encontrado com este Email",
     NEW_SUCCESS_USER = "Novo Usuário cadastrado com Sucesso"
 }
+
+export const enum ETypeStatus {
+    PENDING = "Pendente",
+    COMPLETED = "Concluído",
+    IN_PROGRESS = "Em Progresso"
+}
+
+export const enum ETypeCategory {
+    WORK = "Trabalho",
+    GUYS = "Pessoal",
+    STUDY = "Estudo",
+    FINANCES = "Finanças",
+    TASK_DOMESTIC = "Tarefas Domésticas",
+    TRIP = "Viagem",
+    OTHERS = "Outros"
+}
