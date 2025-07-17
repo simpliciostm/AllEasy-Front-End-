@@ -11,6 +11,12 @@
       "username": "Thiago Simplicio",
       "email": "thiago@email.com",
       "password": "senha"
+    },
+    {
+      "id": "a3bb",
+      "username": "UsuarioNovo",
+      "email": "novo@email.com",
+      "password": "senha"
     }
   ],
   "tasks": [
@@ -58,6 +64,15 @@
       "status": "Pendente",
       "id": "81e7",
       "refUser": "a5fd"
+    },
+    {
+      "title": "",
+      "description": "",
+      "category": "",
+      "priority": "",
+      "status": "Em Progresso",
+      "id": "5eae",
+      "refUser": "a3bb"
     }
   ]
 }

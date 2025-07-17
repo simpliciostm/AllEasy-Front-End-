@@ -25,16 +25,16 @@ const TasksComponent = (props: ITaskComponent) => {
             <Card className="max-w-80 flex flex-col p-6 rounded-2xl gap-4 bg-card">
                 <div className="w-full flex flex-row justify-between gap-14 relative">
                     <div className="w-full flex flex-col gap-2">
-                        <Label className="text-white" htmlFor="title">Título</Label>
-                        <Input onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)} value={title} className=" text-white placeholder:text-white w-full" />
+                        <Label className="text-white" htmlFor="Título">Título</Label>
+                        <Input id="Título" onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)} value={title} className=" text-white placeholder:text-white w-full" />
                     </div>
-                    <div onClick={() => props.onDelete(props.id)} className="absolute -top-4 -right-4 cursor-pointer">
+                    <div data-testid="delete-icon-button" onClick={() => props.onDelete(props.id)} className="absolute -top-4 -right-4 cursor-pointer">
                         <TiDelete color="white" size={29} />
                     </div>
                 </div>
                 <div className="w-full flex flex-col gap-2">
-                    <Label className="text-white" htmlFor="description">Descrição</Label>
-                    <Textarea className="max-h-7 text-white placeholder:text-white" name="description" value={description} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)} />
+                    <Label className="text-white" htmlFor="Descrição">Descrição</Label>
+                    <Textarea id="Descrição" className="max-h-7 text-white placeholder:text-white" name="description" value={description} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)} />
                 </div>
                 <div className="flex flex-row flex-wrap gap-4">
                     <div className="flex flex-col gap-2 w-full">
@@ -104,9 +104,9 @@ const TasksComponent = (props: ITaskComponent) => {
             </Card>
             <div className="flex flex-row gap-4 items-center justify-center">
                 <div className="w-10 h-10 rounded-2xl flex items-center justify-center">
-                    {status == ETypeStatus.COMPLETED ? (<FaRegCircleCheck color="green" size={23} />) : null}
-                    {status == ETypeStatus.IN_PROGRESS ? (<TbProgressCheck color="white" size={23} />) : null}
-                    {status == ETypeStatus.PENDING ? (<MdPendingActions color="yellow" size={23} />) : null}
+                    {status == ETypeStatus.COMPLETED ? (<FaRegCircleCheck data-testid="icon-completed" color="green" size={23} />) : null}
+                    {status == ETypeStatus.IN_PROGRESS ? (<TbProgressCheck data-testid="icon-in-progress" color="white" size={23} />) : null}
+                    {status == ETypeStatus.PENDING ? (<MdPendingActions data-testid="icon-pending" color="yellow" size={23} />) : null}
                 </div>
                
             </div>

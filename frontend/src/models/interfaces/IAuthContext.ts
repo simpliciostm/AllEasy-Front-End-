@@ -3,5 +3,4 @@ export interface IAuthContext {
   logout: () => void;
   username: string;
   userAuth: string;
-  idUser: string;
 }

@@ -1,3 +1,4 @@
+import React from 'react'
 import { Pie, PieChart } from "recharts"
 
 import {
@@ -30,8 +31,8 @@ const PieChartComponent = (props: IPieChartProps) => {
   return (
     <Card className="w-full min-w-52 max-w-1/5 flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle className="text-white">{props.title}</CardTitle>
-        <CardDescription className="text-white">{props.description}</CardDescription>
+        <CardTitle data-testid="title" className="text-white">{props.title}</CardTitle>
+        <CardDescription data-testid="description" className="text-white">{props.description}</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer

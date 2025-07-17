@@ -5,6 +5,9 @@
     { "path": "./tsconfig.node.json" }
   ],
    "compilerOptions": {
+    "jsx": "react-jsx", 
+    "esModuleInterop": true,
+    "module": "commonjs",
     "emitDeclarationOnly": true,
     "declaration": true,
     "baseUrl": ".",

@@ -42,3 +42,12 @@ export const enum ETypeUser {
 export const enum ETypeAuthenticate {
     AUTH = "autenticado"
 }
+
+export const enum ETypeLoginOrRegister {
+    LOGIN = "login",
+    REGISTER = "register"
+}
+
+export const enum ETypeErrorServer {
+    ERROR_SERVER = "Failed Coneect Server"
+}

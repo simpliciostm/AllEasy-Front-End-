@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '@/api/api';
-import { ETypeAuthenticate, ETypeUser, LoginActivities, TypeTextAlert } from '@/enums/GenericData';
-import { clearStorage, getStorage, setLocalStorage } from '@/storage';
+import { ETypeAuthenticate, ETypeErrorServer, ETypeUser, LoginActivities, TypeTextAlert } from '@/enums/GenericData';
+import { clearStorage, getStorage, setLocalStorage } from '@/services/storage';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Terminal } from 'lucide-react';
 import { AuthContext } from './authContext';
@@ -14,7 +14,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [alertMsg, setAlertMsg] = useState<string>('');
     const [username, setUserName] = useState<string>('');
     const [userAuth, setUserAuth] = useState<string>('');
-    const [idUser, setIdUser] = useState<string>('');
 
     const navigate = useNavigate();
 
@@ -41,9 +40,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 }
             }
 
-        } catch (err: unknown) {
-            if (typeof err == 'string')
-                setAlertMsg(err)
+        } catch (err) {
+            setAlertMsg(`${err + ETypeErrorServer.ERROR_SERVER}`)
             setAlert(true)
             setTypeAlert(TypeTextAlert.FAILED)
             timer(false)
@@ -68,7 +66,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                         timer(false)
                     } else {
                         const user: IUser = data[0];
-                        setIdUser(user.id)
                         setLocalStorage('auth', 'autenticado');
                         setLocalStorage('user', user.id);
                         setAlert(true)
@@ -78,9 +75,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     }
                 }
             }
-        } catch (err: unknown) {
-            if (typeof err == 'string')
-                setAlertMsg(err)
+        } catch (err) {
+            setAlertMsg(`${err + ETypeErrorServer.ERROR_SERVER}`)
             setAlert(true)
             setTypeAlert(TypeTextAlert.FAILED)
             timer(false)
@@ -112,7 +108,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }, [getUserInfo, navigate, userAuth])
 
     return (
-        <AuthContext.Provider value={{ login, logout, username, userAuth, idUser }}>
+        <AuthContext.Provider value={{ login, logout, username, userAuth }}>
             {children}
             <div className="w-full flex items-center justify-center absolute bottom-5">
                 {

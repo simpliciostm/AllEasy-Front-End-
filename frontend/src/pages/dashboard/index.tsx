@@ -4,12 +4,12 @@ import NavBard from "@/components/navbar"
 import PieChartComponent from "@/components/pieChart"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Card, CardHeader, CardTitle } from "@/components/ui/card"
-import { AuthContext } from "@/contexts/authContext"
-import { ETypeCategory, ETypeStatus, TypeTextAlert } from "@/enums/GenericData"
+import { ETypeCategory, ETypeErrorServer, ETypeStatus, TypeTextAlert } from "@/enums/GenericData"
 import type { ITaskList } from "@/models/interfaces/ITask"
+import { getStorage } from "@/services/storage"
 import Typography from "@mui/material/Typography"
 import { Terminal } from "lucide-react"
-import React, { useCallback, useContext } from "react"
+import React, { useCallback } from "react"
 import { useEffect } from "react"
 
 const DashBoard = () => {
@@ -21,10 +21,10 @@ const DashBoard = () => {
     const [typeAlert, setTypeAlert] = React.useState<string>('');
     const [alertMsg, setAlertMsg] = React.useState<string>('');
 
-    const {idUser} = useContext(AuthContext)
-
     const getTasksToStatus = useCallback(async () => {
         try {
+            const idUser = getStorage("user")
+
             let totalTaskPending: number = 0;
             let totalTaskCompleted: number = 0;
             let totalTaskInProgress: number = 0;
@@ -46,16 +46,18 @@ const DashBoard = () => {
 
             setTotalTaskCompleted(totalTaskCompleted)
             setTotalTaskPending(totalTaskPending)
-        } catch (err: unknown) {
-            if (typeof err == 'string') setAlertMsg(err)
+        } catch (err) {
+            setAlertMsg(`${err + ETypeErrorServer.ERROR_SERVER}`)
             setAlert(true)
             setTypeAlert(TypeTextAlert.FAILED)
             timer()
         }
-    }, [setTotalTaskPending, setTotalTaskCompleted, setTaskListStatus, setAlert, setAlertMsg, setTypeAlert, idUser])
+    }, [setTotalTaskPending, setTotalTaskCompleted, setTaskListStatus, setAlert, setAlertMsg, setTypeAlert])
 
     const getTasksToCategory = useCallback(async () => {
         try {
+            const idUser = getStorage("user")
+
             let totalTaskWork: number = 0;
             let totalTaskTrip: number = 0;
             let totalTaskDomestic: number = 0;
@@ -94,13 +96,13 @@ const DashBoard = () => {
                 { fieldname: ETypeCategory.GUYS, total: totalTaskGuys, fill: 'var(--color-chart-6)' },
                 { fieldname: ETypeCategory.FINANCES, total: totalTaskFinances, fill: 'var(--color-chart-7)' },
             ])
-        } catch (err: unknown) {
-            if (typeof err == 'string') setAlertMsg(err)
+        } catch (err) {
+            setAlertMsg(`${err + ETypeErrorServer.ERROR_SERVER}`)
             setAlert(true)
             setTypeAlert(TypeTextAlert.FAILED)
             timer()
         }
-    }, [setTaskListCategory, setAlert, setAlertMsg, setTypeAlert, idUser])
+    }, [setTaskListCategory, setAlert, setAlertMsg, setTypeAlert])
 
     const timer = () => {
         setTimeout(() => {
@@ -108,7 +110,7 @@ const DashBoard = () => {
         }, 5000)
     }
 
-     useEffect(() => {
+    useEffect(() => {
         getTasksToStatus()
         getTasksToCategory()
     }, [totalTaskCompleted, totalTaskPending, getTasksToStatus, getTasksToCategory])

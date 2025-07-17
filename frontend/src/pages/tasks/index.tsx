@@ -6,12 +6,12 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { AuthContext } from "@/contexts/authContext"
-import { TaskActivities, TypeTextAlert } from "@/enums/GenericData"
+import { ETypeErrorServer, TaskActivities, TypeTextAlert } from "@/enums/GenericData"
 import type { ITask } from "@/models/interfaces/ITask"
+import { getStorage } from "@/services/storage"
 import Typography from "@mui/material/Typography"
 import { Terminal } from "lucide-react"
-import React, { useCallback, useContext } from "react"
+import React, { useCallback } from "react"
 import { useEffect } from "react"
 
 const Tasks = () => {
@@ -24,16 +24,26 @@ const Tasks = () => {
     const [typeAlert, setTypeAlert] = React.useState<string>('');
     const [alertMsg, setAlertMsg] = React.useState<string>('');
 
-    const {idUser} = useContext(AuthContext)
-
     const getListTaks = useCallback(async () => {
-        const { data } = await api.get(`/tasks?refUser=${idUser}`)
-        if (data && data.length) setTasks(data)
-    },[setTasks, idUser])
+        try {
+            const idUser = getStorage("user")
+            if (idUser) {
+                const { data } = await api.get(`/tasks?refUser=${idUser}`)
+                if (data && data.length) setTasks(data)
+            }
+        } catch (err) {
+            setAlertMsg(`${err + ETypeErrorServer.ERROR_SERVER}`)
+            setAlert(true)
+            setTypeAlert(TypeTextAlert.FAILED)
+            timer()
+        }
+    }, [setTasks])
 
     const handleAddNewTask = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         try {
+            const idUser = getStorage("user")
+
             await api.post(`/tasks`, {
                 refUser: idUser,
                 title: "",
@@ -42,9 +52,8 @@ const Tasks = () => {
                 priority: "",
                 status: ""
             })
-        } catch (err: unknown) {
-            if (typeof err == 'string')
-                setAlertMsg(err)
+        } catch (err) {
+            setAlertMsg(`${err + ETypeErrorServer.ERROR_SERVER}`)
             setAlert(true)
             setTypeAlert(TypeTextAlert.FAILED)
             timer()
@@ -60,9 +69,8 @@ const Tasks = () => {
                 setTypeAlert(TypeTextAlert.SUCCESS)
                 timer()
             }
-        } catch (err: unknown) {
-            if (typeof err == 'string')
-                setAlertMsg(err)
+        } catch (err) {
+            setAlertMsg(`${err + ETypeErrorServer.ERROR_SERVER}`)
             setAlert(true)
             setTypeAlert(TypeTextAlert.FAILED)
             timer()
@@ -80,9 +88,8 @@ const Tasks = () => {
                 timer()
             }
 
-        } catch (err: unknown) {
-            if (typeof err == 'string')
-                setAlertMsg(err)
+        } catch (err) {
+            setAlertMsg(`${err + ETypeErrorServer.ERROR_SERVER}`)
             setAlert(true)
             setTypeAlert(TypeTextAlert.FAILED)
             timer()
@@ -92,7 +99,8 @@ const Tasks = () => {
     const applyFilterListTask = async (e: React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault()
         try {
-            const { data } = await api.get(`/tasks?priority=${priority}&category=${category}&status=${status}`);
+            const idUser = getStorage("user")
+            const { data } = await api.get(`/tasks?refUser=${idUser}&priority=${priority}&category=${category}&status=${status}`);
             if (data && data.length >= 1) {
                 const taskFilter: ITask[] = data
                 if (title && title.length >= 1) setTasks(taskFilter.filter(task => task.title.toLocaleLowerCase().includes(title.toLocaleLowerCase())))
@@ -100,9 +108,8 @@ const Tasks = () => {
             } else {
                 setTasks(data)
             }
-        } catch (err: unknown) {
-            if (typeof err == 'string')
-                setAlertMsg(err)
+        } catch (err) {
+            setAlertMsg(`${err + ETypeErrorServer.ERROR_SERVER}`)
             setAlert(true)
             setTypeAlert(TypeTextAlert.FAILED)
             timer()
@@ -118,9 +125,8 @@ const Tasks = () => {
             setStatus('');
 
             getListTaks();
-        } catch (err: unknown) {
-            if (typeof err == 'string')
-                setAlertMsg(err)
+        } catch (err) {
+            setAlertMsg(`${err + ETypeErrorServer.ERROR_SERVER}`)
             setAlert(true)
             setTypeAlert(TypeTextAlert.FAILED)
             timer()
