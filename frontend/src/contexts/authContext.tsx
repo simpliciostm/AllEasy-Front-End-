@@ -5,6 +5,5 @@ export const AuthContext = createContext<IAuthContext>({
   login: () => {},
   logout: () => {},
   username: "",
-  userAuth: "",
-  idUser: ""
+  userAuth: ""
 });

@@ -1,3 +1,4 @@
+import React from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart"
 import type { IBarChartProps } from "@/models/interfaces/IBarChart"
@@ -21,8 +22,8 @@ const BarCharComponent = (props: IBarChartProps) => {
     return (
         <Card className="w-full h-72">
             <CardHeader>
-                <CardTitle className="text-white">{props.title}</CardTitle>
-                <CardDescription className="text-white">{props.description}</CardDescription>
+                <CardTitle data-testid="title" className="text-white">{props.title}</CardTitle>
+                <CardDescription data-testid="description" className="text-white">{props.description}</CardDescription>
             </CardHeader>
             <CardContent className="w-full h-44">
                 <ChartContainer className="h-full w-full" config={chartConfig}>

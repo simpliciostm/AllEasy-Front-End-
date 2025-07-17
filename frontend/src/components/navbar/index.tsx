@@ -39,7 +39,7 @@ const NavBar = () => {
                                     {username}
                                 </Typography>
                             </div>
-                            <Button style={{ color: 'white' }} onClick={() => {
+                            <Button title='logout' style={{ color: 'white' }} onClick={() => {
                                 logout()
                             }}><IoIosLogOut color='white' size={21} /></Button>
                         </div>
@@ -50,14 +50,14 @@ const NavBar = () => {
                 <div className='bg-sidebar-primary h-screen'>
                     <MenuList sx={{ width: '100%', flexGrow: 1 }}>
                         <Divider />
-                        <MenuItem onClick={() => {
+                        <MenuItem title='tarefas' onClick={() => {
                             navigate('/tarefas')
                         }} className='flex flex-row gap-2 items-center'>
                             <FaTasks size={20} color='white' />
                             {isMobile ? (<ListItemText className='text-white w-full' >Tarefas</ListItemText>) : null}
                         </MenuItem>
                         <Divider />
-                        <MenuItem onClick={() => {
+                        <MenuItem title='dashboard' onClick={() => {
                             navigate('/dashboard')
                         }} className='flex flex-row gap-2 items-center'>
                             <FaHome size={20} color='white' />
