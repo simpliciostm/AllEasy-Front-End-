@@ -6,21 +6,13 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { AuthContext } from "@/contexts/authContext"
 import { TaskActivities, TypeTextAlert } from "@/enums/GenericData"
+import type { ITask } from "@/models/interfaces/ITask"
 import Typography from "@mui/material/Typography"
 import { Terminal } from "lucide-react"
-import React from "react"
+import React, { useCallback, useContext } from "react"
 import { useEffect } from "react"
-
-interface ITask {
-    id: string,
-    title: string,
-    description: string,
-    priority: string,
-    category: string,
-    status: string,
-    refUser: string
-}
 
 const Tasks = () => {
     const [tasks, setTasks] = React.useState<ITask[]>()
@@ -32,20 +24,18 @@ const Tasks = () => {
     const [typeAlert, setTypeAlert] = React.useState<string>('');
     const [alertMsg, setAlertMsg] = React.useState<string>('');
 
-    useEffect(() => {
-        getListTaks()
-    }, [])
+    const {idUser} = useContext(AuthContext)
 
-    const getListTaks = async () => {
-        const { data } = await api.get(`/tasks?refUser=a5fd`)
+    const getListTaks = useCallback(async () => {
+        const { data } = await api.get(`/tasks?refUser=${idUser}`)
         if (data && data.length) setTasks(data)
-    }
+    },[setTasks, idUser])
 
     const handleAddNewTask = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         try {
             await api.post(`/tasks`, {
-                refUser: "a5fd",
+                refUser: idUser,
                 title: "",
                 description: "",
                 category: "",
@@ -102,9 +92,11 @@ const Tasks = () => {
     const applyFilterListTask = async (e: React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault()
         try {
-            const { data } = await api.get(`/tasks?title=${title}&priority=${priority}&category=${category}&status=${status}`);
+            const { data } = await api.get(`/tasks?priority=${priority}&category=${category}&status=${status}`);
             if (data && data.length >= 1) {
-                setTasks(data)
+                const taskFilter: ITask[] = data
+                if (title && title.length >= 1) setTasks(taskFilter.filter(task => task.title.toLocaleLowerCase().includes(title.toLocaleLowerCase())))
+                else setTasks(data)
             } else {
                 setTasks(data)
             }
@@ -141,12 +133,16 @@ const Tasks = () => {
         }, 3000)
     }
 
+    useEffect(() => {
+        getListTaks()
+    }, [getListTaks])
+
     return (
         <div className="w-full flex flex-row gap-5">
             <div className='flex flex-row'>
                 <NavBard />
             </div>
-            <div className="w-full h-screen mt-20 flex flex-col gap-2 pr-4 overflow-auto">
+            <div className="w-full mt-20 flex flex-col gap-2 pr-4">
                 <Typography variant="h5" className="text-white font-bold">Gerenciamento de Tarefas</Typography>
                 <form onSubmit={(e: React.SyntheticEvent<HTMLFormElement>) => applyFilterListTask(e)} className="w-full flex flex-row gap-7 p-4 rounded-2xl flex-wrap items-center text-center">
                     <div className="flex flex-col items-start gap-2 flex-wrap">
@@ -194,9 +190,13 @@ const Tasks = () => {
                             <SelectContent>
                                 <SelectGroup>
                                     <SelectLabel>Selecione</SelectLabel>
-                                    <SelectItem value="Alta">Alta</SelectItem>
-                                    <SelectItem value="Média">Média</SelectItem>
-                                    <SelectItem value="Baixa">Baixa</SelectItem>
+                                    <SelectItem value="Pessoal">Pessoal</SelectItem>
+                                    <SelectItem value="Trabalho">Trabalho</SelectItem>
+                                    <SelectItem value="Estudo">Estudo</SelectItem>
+                                    <SelectItem value="Finanças">Finanças</SelectItem>
+                                    <SelectItem value="Tarefas domésticas">Tarefas Domésticas</SelectItem>
+                                    <SelectItem value="Viagem">Viagem</SelectItem>
+                                    <SelectItem value="Outros">Outros</SelectItem>
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
@@ -208,7 +208,7 @@ const Tasks = () => {
                     </div>
                 </form>
                 <div className="w-full flex flex-col gap-8 flex-wrap justify-start items-start">
-                    
+
                     <div className="w-full flex flex-row gap-8 flex-wrap">
                         {
                             tasks && tasks.length ? (

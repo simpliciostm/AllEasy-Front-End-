@@ -4,17 +4,13 @@ import NavBard from "@/components/navbar"
 import PieChartComponent from "@/components/pieChart"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Card, CardHeader, CardTitle } from "@/components/ui/card"
+import { AuthContext } from "@/contexts/authContext"
 import { ETypeCategory, ETypeStatus, TypeTextAlert } from "@/enums/GenericData"
+import type { ITaskList } from "@/models/interfaces/ITask"
 import Typography from "@mui/material/Typography"
 import { Terminal } from "lucide-react"
-import React, { useCallback } from "react"
+import React, { useCallback, useContext } from "react"
 import { useEffect } from "react"
-
-interface ITaskList {
-    fieldname: string
-    total: number,
-    fill?: string
-}
 
 const DashBoard = () => {
     const [taskListStatus, setTaskListStatus] = React.useState<ITaskList[]>([]);
@@ -25,7 +21,7 @@ const DashBoard = () => {
     const [typeAlert, setTypeAlert] = React.useState<string>('');
     const [alertMsg, setAlertMsg] = React.useState<string>('');
 
-   
+    const {idUser} = useContext(AuthContext)
 
     const getTasksToStatus = useCallback(async () => {
         try {
@@ -33,19 +29,19 @@ const DashBoard = () => {
             let totalTaskCompleted: number = 0;
             let totalTaskInProgress: number = 0;
 
-            const dataPending = await api.get(`/tasks?refUser=a5fd&status=${ETypeStatus.PENDING}`)
+            const dataPending = await api.get(`/tasks?refUser=${idUser}&status=${ETypeStatus.PENDING}`)
             if (dataPending && dataPending.data && dataPending.data.length >= 1) totalTaskPending = dataPending.data.length
 
-            const dataProgress = await api.get(`/tasks?refUser=a5fd&status=${ETypeStatus.IN_PROGRESS}`)
+            const dataProgress = await api.get(`/tasks?refUser=${idUser}&status=${ETypeStatus.IN_PROGRESS}`)
             if (dataProgress && dataProgress.data && dataProgress.data.length >= 1) totalTaskInProgress = dataProgress.data.length
 
-            const dataCompleted = await api.get(`/tasks?refUser=a5fd&status=${ETypeStatus.COMPLETED}`)
+            const dataCompleted = await api.get(`/tasks?refUser=${idUser}&status=${ETypeStatus.COMPLETED}`)
             if (dataCompleted && dataCompleted.data && dataCompleted.data.length >= 1) totalTaskCompleted = dataCompleted.data.length
 
             setTaskListStatus([
-                { fieldname: ETypeStatus.PENDING, total: totalTaskPending },
-                { fieldname: ETypeStatus.IN_PROGRESS, total: totalTaskInProgress },
-                { fieldname: ETypeStatus.COMPLETED, total: totalTaskCompleted }
+                { fieldname: ETypeStatus.PENDING, total: totalTaskPending, fill: 'var(--color-chart-2)' },
+                { fieldname: ETypeStatus.IN_PROGRESS, total: totalTaskInProgress, fill: 'var(--color-chart-1)' },
+                { fieldname: ETypeStatus.COMPLETED, total: totalTaskCompleted, fill: 'var(--color-chart-6)' }
             ])
 
             setTotalTaskCompleted(totalTaskCompleted)
@@ -56,7 +52,7 @@ const DashBoard = () => {
             setTypeAlert(TypeTextAlert.FAILED)
             timer()
         }
-    }, [setTotalTaskPending, setTotalTaskCompleted, setTaskListStatus, setAlert, setAlertMsg, setTypeAlert])
+    }, [setTotalTaskPending, setTotalTaskCompleted, setTaskListStatus, setAlert, setAlertMsg, setTypeAlert, idUser])
 
     const getTasksToCategory = useCallback(async () => {
         try {
@@ -68,25 +64,25 @@ const DashBoard = () => {
             let totalTaskGuys: number = 0;
             let totalTaskFinances: number = 0;
 
-            const dataWork = await api.get(`/tasks?refUser=a5fd&category=${ETypeCategory.WORK}`)
+            const dataWork = await api.get(`/tasks?refUser=${idUser}&category=${ETypeCategory.WORK}`)
             if (dataWork && dataWork.data && dataWork.data.length >= 1) totalTaskWork = dataWork.data.length
 
-            const dataTrip = await api.get(`/tasks?refUser=a5fd&category=${ETypeCategory.TRIP}`)
+            const dataTrip = await api.get(`/tasks?refUser=${idUser}&category=${ETypeCategory.TRIP}`)
             if (dataTrip && dataTrip.data && dataTrip.data.length >= 1) totalTaskTrip = dataTrip.data.length
 
-            const dataDomestic = await api.get(`/tasks?refUser=a5fd&category=${ETypeCategory.TASK_DOMESTIC}`)
+            const dataDomestic = await api.get(`/tasks?refUser=${idUser}&category=${ETypeCategory.TASK_DOMESTIC}`)
             if (dataDomestic && dataDomestic.data && dataDomestic.data.length >= 1) totalTaskDomestic = dataDomestic.data.length
 
-            const dataStudy = await api.get(`/tasks?refUser=a5fd&category=${ETypeCategory.STUDY}`)
+            const dataStudy = await api.get(`/tasks?refUser=${idUser}&category=${ETypeCategory.STUDY}`)
             if (dataStudy && dataStudy.data && dataStudy.data.length >= 1) totalTaskStudy = dataStudy.data.length
 
-            const dataOthers = await api.get(`/tasks?refUser=a5fd&category=${ETypeCategory.OTHERS}`)
+            const dataOthers = await api.get(`/tasks?refUser=${idUser}&category=${ETypeCategory.OTHERS}`)
             if (dataOthers && dataOthers.data && dataOthers.data.length >= 1) totalTaskOthers = dataOthers.data.length
 
-            const dataGuys = await api.get(`/tasks?refUser=a5fd&category=${ETypeCategory.GUYS}`)
+            const dataGuys = await api.get(`/tasks?refUser=${idUser}&category=${ETypeCategory.GUYS}`)
             if (dataGuys && dataGuys.data && dataGuys.data.length >= 1) totalTaskGuys = dataGuys.data.length
 
-            const dataFinances = await api.get(`/tasks?refUser=a5fd&category=${ETypeCategory.FINANCES}`)
+            const dataFinances = await api.get(`/tasks?refUser=${idUser}&category=${ETypeCategory.FINANCES}`)
             if (dataFinances && dataFinances.data && dataFinances.data.length >= 1) totalTaskFinances = dataFinances.data.length
 
             setTaskListCategory([
@@ -104,7 +100,7 @@ const DashBoard = () => {
             setTypeAlert(TypeTextAlert.FAILED)
             timer()
         }
-    }, [setTaskListCategory, setAlert, setAlertMsg, setTypeAlert])
+    }, [setTaskListCategory, setAlert, setAlertMsg, setTypeAlert, idUser])
 
     const timer = () => {
         setTimeout(() => {
@@ -122,7 +118,7 @@ const DashBoard = () => {
             <div className='flex flex-row'>
                 <NavBard />
             </div>
-            <div className="w-full h-screen mt-20 flex flex-col gap-2 pr-4 overflow-auto">
+            <div className="w-full mt-20 flex flex-col gap-2 pr-4 overflow-hidden">
                 <div className="w-full">
                     <Typography variant="h5" className="text-white font-bold">Dashboard Analítico</Typography>
                 </div>
@@ -130,13 +126,13 @@ const DashBoard = () => {
                     <BarCharComponent title="Tarefas por Status" list={taskListStatus} listKeyName="fieldname" keyBarName="total" description="Grafico com analise de Tarefas por Status" />
                     <div className="w-full flex flex-row justify-center items-center flex-wrap gap-20">
                         <PieChartComponent title="Tarefas por Categoria" list={taskListCategory} listKeyName="fieldname" keyBarName="total" description="Grafico com analise de Tarefas por Categoria" />
-                        <Card className="w-1/5 min-w-72 max-w-1/5 h-2/5 min-h-52 max-h-52 flex flex-col items-center justify-center text-center">
+                        <Card className="w-full min-w-52 max-w-1/5 flex flex-col items-center justify-center text-center">
                             <CardHeader className="w-full h-full flex flex-col items-center gap-5">
                                 <CardTitle className="text-white">Contador de Tarefas Concluidas</CardTitle>
                                 <Typography className="text-white" style={{ fontSize: '50px' }}>{totalTaskCompleted}</Typography>
                             </CardHeader>
                         </Card>
-                        <Card className="w-1/5 min-w-72 max-w-1/5 h-2/5 min-h-52 max-h-52 flex flex-col">
+                        <Card className="w-full min-w-52 max-w-1/5 flex flex-col">
                             <CardHeader className="w-full text-center flex flex-col items-center gap-5">
                                 <CardTitle className="text-white">Contador de Tarefas Pendentes</CardTitle>
                                 <Typography className="text-white" style={{ fontSize: '50px' }}>{totalTaskPending}</Typography>

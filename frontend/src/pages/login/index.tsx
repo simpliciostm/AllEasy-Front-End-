@@ -26,8 +26,8 @@ const Login = () => {
   }
 
   return (
-    <div className="w-full h-screen flex items-center justify-center">
-      <Card className="w-full max-w-sm border-0">
+    <div className="w-full h-screen flex items-center justify-center overflow-hidden">
+      <Card className="w-full min-w-72 max-w-1/4 border-0">
         <CardHeader>
           <CardTitle className="text-white" >Tela de Acesso</CardTitle>
           <CardDescription className="text-white" >

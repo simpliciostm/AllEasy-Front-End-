@@ -4,50 +4,37 @@ import { Card } from "../ui/card"
 import { Input } from "../ui/input"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
-import { FaTrash } from "react-icons/fa";
-import { FaCheck } from "react-icons/fa";
+import { FaRegCircleCheck } from "react-icons/fa6";
 import React from "react"
-
-interface ITask {
-    id: string,
-    title: string,
-    description: string,
-    priority: string,
-    category: string,
-    status: string,
-    refUser: string
-}
-
-interface ITaskComponent {
-    id: string,
-    key: string | number,
-    title: string,
-    description: string,
-    category: string,
-    refUser: string,
-    status: string,
-    priority: string,
-    onDelete: (idTask: string) => void
-    onPut: (idTask: string, task: ITask) => void
-}
+import { TiDelete } from "react-icons/ti";
+import { ETypeStatus } from "@/enums/GenericData"
+import { TbProgressCheck } from "react-icons/tb";
+import { MdPendingActions } from "react-icons/md";
+import { Button } from "../ui/button"
+import type { ITaskComponent } from "@/models/interfaces/ITask"
 
 const TasksComponent = (props: ITaskComponent) => {
-    const [title, setTitle] = React.useState<string>('');
-    const [description, setDescription] = React.useState<string>('')
+    const [title, setTitle] = React.useState<string>(props.title ?? '');
+    const [description, setDescription] = React.useState<string>(props.description ?? '')
     const [category, setCategory] = React.useState<string>('')
-    const [status, setStatus] = React.useState<string>('');
+    const [status, setStatus] = React.useState<string>(props.status ?? '');
     const [priority, setPriority] = React.useState<string>('');
 
     return (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col">
             <Card className="max-w-80 flex flex-col p-6 rounded-2xl gap-4 bg-card">
-                <div className="w-full flex flex-col gap-2">
-                    <Label className="text-white" htmlFor="title">Título</Label>
-                    <Input placeholder={props.title} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)} className=" text-white placeholder:text-white" />
+                <div className="w-full flex flex-row justify-between gap-14 relative">
+                    <div className="w-full flex flex-col gap-2">
+                        <Label className="text-white" htmlFor="title">Título</Label>
+                        <Input onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)} value={title} className=" text-white placeholder:text-white w-full" />
+                    </div>
+                    <div onClick={() => props.onDelete(props.id)} className="absolute -top-4 -right-4 cursor-pointer">
+                        <TiDelete color="white" size={29} />
+                    </div>
                 </div>
                 <div className="w-full flex flex-col gap-2">
                     <Label className="text-white" htmlFor="description">Descrição</Label>
-                    <Textarea placeholder={props.description} className="max-h-7 text-white placeholder:text-white" name="description" value={description} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)} />
+                    <Textarea className="max-h-7 text-white placeholder:text-white" name="description" value={description} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)} />
                 </div>
                 <div className="flex flex-row flex-wrap gap-4">
                     <div className="flex flex-col gap-2 w-full">
@@ -103,12 +90,7 @@ const TasksComponent = (props: ITaskComponent) => {
                         </RadioGroup>
                     </div>
                 </div>
-            </Card>
-            <div className="flex flex-row gap-4 items-center justify-center">
-                <div onClick={() => props.onDelete(props.id)} className="w-10 h-10 rounded-3xl flex items-center justify-center bg-sidebar-accent cursor-pointer">
-                    <FaTrash color="#D66B6B" />
-                </div>
-                <div onClick={() => props.onPut(props.id, {
+                 <Button onClick={() => props.onPut(props.id, {
                     title: title && title != props.title ? title : props.title,
                     description: description && description != props.description ? description : props.description,
                     category: category && category != props.category ? category : props.category,
@@ -116,9 +98,17 @@ const TasksComponent = (props: ITaskComponent) => {
                     status: status && status != props.status ? status : props.status,
                     id: props.id,
                     refUser: props.refUser
-                })} className="w-10 h-10 rounded-3xl flex items-center justify-center bg-sidebar-accent cursor-pointer">
-                    <FaCheck color="#6B7FD6" />
+                })} className="w-full h-10 flex items-center justify-center cursor-pointer bg-white text-card hover:opacity-80 hover:bg-white">
+                    Salvar
+                </Button>
+            </Card>
+            <div className="flex flex-row gap-4 items-center justify-center">
+                <div className="w-10 h-10 rounded-2xl flex items-center justify-center">
+                    {status == ETypeStatus.COMPLETED ? (<FaRegCircleCheck color="green" size={23} />) : null}
+                    {status == ETypeStatus.IN_PROGRESS ? (<TbProgressCheck color="white" size={23} />) : null}
+                    {status == ETypeStatus.PENDING ? (<MdPendingActions color="yellow" size={23} />) : null}
                 </div>
+               
             </div>
         </div>
     )

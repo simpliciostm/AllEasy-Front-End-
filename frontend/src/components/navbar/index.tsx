@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 import Divider from '@mui/material/Divider';
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
@@ -25,26 +24,18 @@ const NavBar = () => {
 
     return (
         <div className='w-full flex flex-col z-50'>
-            <Box sx={{ flexGrow: 1, width: '100%' }}>
+            <Box sx={{ width: '100%' }}>
                 <AppBar color='transparent' style={{ height: '60px', zIndex: '30', position: 'fixed', width: '100%', backgroundColor: '#1a1a1a', boxShadow: 'none' }}>
-                    <Toolbar>
-                        <IconButton
-                            size="large"
-                            edge="start"
-                            color="inherit"
-                            aria-label="menu"
-                            sx={{ mr: 2 }}
-                        >
-                        </IconButton>
-                        <Typography fontWeight={'bold'} variant="h6" component="div" sx={{ flexGrow: 1 }} className='text-white'>
+                    <Toolbar className='w-full flex justify-between items-center'>
+                        <Typography fontWeight={'bold'} variant="h6" component="span" className='text-white'>
                             AllEasy
                         </Typography>
                         <div className='flex flex-row items-center gap-5'>
                             <div className='flex flex-col'>
-                                <Typography fontSize={15} fontWeight={'bold'} component="span" sx={{ flexGrow: 1 }} className='text-white'>
+                                <Typography fontSize={15} fontWeight={'bold'} component="span" className='text-white'>
                                     Bem vindo,
                                 </Typography>
-                                <Typography fontSize={15} fontWeight={'bold'} component="span" sx={{ flexGrow: 1 }} className='text-white'>
+                                <Typography fontSize={15} fontWeight={'bold'} component="span" className='text-white'>
                                     {username}
                                 </Typography>
                             </div>
@@ -55,7 +46,7 @@ const NavBar = () => {
                     </Toolbar>
                 </AppBar>
             </Box>
-            <Box sx={{ flexGrow: 1, height: '100vh', backgroundColor: 'transparent', position: 'static', marginTop: '60px' }}>
+            <Box sx={{ height: '100vh', backgroundColor: 'transparent', position: 'static', marginTop: '60px' }}>
                 <div className='bg-sidebar-primary h-screen'>
                     <MenuList sx={{ width: '100%', flexGrow: 1 }}>
                         <Divider />

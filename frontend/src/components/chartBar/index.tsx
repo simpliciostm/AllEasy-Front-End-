@@ -1,19 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart"
+import type { IBarChartProps } from "@/models/interfaces/IBarChart"
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from "recharts"
-
-interface ITaskList {
-    fieldname: string
-    total: number
-}
-
-interface IBarChartProps {
-    title: string,
-    description: string,
-    list: ITaskList[],
-    listKeyName: string
-    keyBarName: string
-}
 
 const BarCharComponent = (props: IBarChartProps) => {
     const chartConfig = {

@@ -13,19 +13,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-
-interface ITaskList {
-    fieldname: string
-    total: number
-}
-
-interface IPieChartProps {
-    title: string,
-    description: string,
-    list: ITaskList[],
-    listKeyName: string
-    keyBarName: string
-}
+import type { IPieChartProps } from "@/models/interfaces/IPieChart"
 
 const chartConfig = {
   Pessoal: {
@@ -40,7 +28,7 @@ const chartConfig = {
 
 const PieChartComponent = (props: IPieChartProps) => {
   return (
-    <Card className="w-full min-w-72 max-w-1/5 flex flex-col">
+    <Card className="w-full min-w-52 max-w-1/5 flex flex-col">
       <CardHeader className="items-center pb-0">
         <CardTitle className="text-white">{props.title}</CardTitle>
         <CardDescription className="text-white">{props.description}</CardDescription>

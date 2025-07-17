@@ -14,6 +14,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [alertMsg, setAlertMsg] = useState<string>('');
     const [username, setUserName] = useState<string>('');
     const [userAuth, setUserAuth] = useState<string>('');
+    const [idUser, setIdUser] = useState<string>('');
+
     const navigate = useNavigate();
 
     const timer = useCallback((to: boolean) => {
@@ -25,7 +27,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const getUserInfo = useCallback(async () => {
         try {
-            const idUser = getStorage('id')
+            const idUser = getStorage('user')
             if (idUser) {
                 const { data } = await api.get(`/users?id=${idUser}`)
                 if (data && data.length) {
@@ -66,8 +68,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                         timer(false)
                     } else {
                         const user: IUser = data[0];
-                        setLocalStorage('id', user.id);
+                        setIdUser(user.id)
                         setLocalStorage('auth', 'autenticado');
+                        setLocalStorage('user', user.id);
                         setAlert(true)
                         setTypeAlert(TypeTextAlert.SUCCESS)
                         setAlertMsg(LoginActivities.SUCCESS)
@@ -109,12 +112,12 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }, [getUserInfo, navigate, userAuth])
 
     return (
-        <AuthContext.Provider value={{ login, logout, username, userAuth }}>
+        <AuthContext.Provider value={{ login, logout, username, userAuth, idUser }}>
             {children}
             <div className="w-full flex items-center justify-center absolute bottom-5">
                 {
                     alert ? (
-                        <Alert className="max-w-2/12" variant={typeAlert == TypeTextAlert.FAILED ? 'destructive' : typeAlert == TypeTextAlert.SUCCESS ? 'default' : 'default'} >
+                        <Alert className="w-full min-w-72 max-w-1/12" variant={typeAlert == TypeTextAlert.FAILED ? 'destructive' : typeAlert == TypeTextAlert.SUCCESS ? 'default' : 'default'} >
                             <Terminal />
                             <AlertTitle>{typeAlert}</AlertTitle>
                             <AlertDescription>
