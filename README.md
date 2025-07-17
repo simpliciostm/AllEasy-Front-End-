@@ -15,6 +15,9 @@ Este é um projeto frontend simples desenvolvido com **React**, **TypeScript**, 
 
 ---
 
+## Front-End
+ - Entrar no arquivo frontend do projeto
+
 ## 📦 Instalação
 
 ```bash
